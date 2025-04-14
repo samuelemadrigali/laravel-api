@@ -17,7 +17,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         if ($user) {
-            return new JsonResponse(new UserResource($user), Response::HTTP_OK);
+            return new JsonResponse(new UserResource($user));
         }
 
         return new JsonResponse(null, Response::HTTP_UNAUTHORIZED);

@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relationship with the Project model.
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }
