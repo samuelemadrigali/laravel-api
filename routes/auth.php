@@ -5,18 +5,19 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-    ->middleware('guest')
+    ->middleware(['guest', HandlePrecognitiveRequests::class])
     ->name('login');
 
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->middleware('guest')
+    ->middleware(['guest', HandlePrecognitiveRequests::class])
     ->name('password.email');
 
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->middleware('guest')
+    ->middleware(['guest', HandlePrecognitiveRequests::class])
     ->name('password.store');
 
 Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
@@ -24,7 +25,7 @@ Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
     ->name('verification.verify');
 
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-    ->middleware(['auth', 'throttle:6,1'])
+    ->middleware(['auth', 'throttle:6,1', HandlePrecognitiveRequests::class])
     ->name('verification.send');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
